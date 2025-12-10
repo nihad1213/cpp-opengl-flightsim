@@ -68,7 +68,19 @@ Model loadObj(const std::string &filepath) {
 /**
  * renderModel: draw model
  */
-void renderModel() {
+void renderModel(const Model &model) {
+    glBegin(GL_TRIANGLES);
 
+    for (const Face &face : model.faces) {
+        const Vertex &v1 = model.vertices[face.v1];
+        const Vertex &v2 = model.vertices[face.v2];
+        const Vertex &v3 = model.vertices[face.v3];
+
+        glVertex3f(v1.x, v1.y, v1.z);
+        glVertex3f(v2.x, v2.y, v2.z);
+        glVertex3f(v3.x, v3.y, v3.z);
+    }
+
+    glEnd();
 }
 
