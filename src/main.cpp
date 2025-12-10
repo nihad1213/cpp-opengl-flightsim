@@ -1,5 +1,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "functions/MainFunctions.hpp"
+
 // #include "glad/glad.h"
 
 int main() {
@@ -12,19 +14,12 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Fligh Similator", nullptr, nullptr);
-    
-    if (!window) {
-        std::cerr << "Failed to initialize window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
+    GLFWwindow* window = createWindow(800, 600, "Flight Simulator");
 
-    glfwMakeContextCurrent(window);
-
+    if (!window) return -1;
 
     while (!glfwWindowShouldClose(window)) {
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glfwSwapBuffers(window);

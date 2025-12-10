@@ -1,40 +1,56 @@
+# Compiler
 CXX = g++
-CC = gcc
-CXXFLAGS = -std=c++23 -Wall -Wextra -I./src/include
-CFLAGS = -Wall -Wextra -I./src/include
+CC  = gcc
 
+# Flags
+CXXFLAGS = -std=c++23 -Wall -Wextra -I./src/include
+CFLAGS   = -Wall -Wextra -I./src/include
+
+# Libraries
 LIBS = -lglfw -lGL -lm -ldl
 
 # Directories
-SRC_DIR = src
+SRC_DIRS = src src/functions
 BUILD_DIR = build
-BIN_DIR = bin
+BIN_DIR   = bin
 
-CPP_SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-C_SOURCES = $(wildcard $(SRC_DIR)/*.c)
+# Source files
+CPP_SOURCES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
+C_SOURCES   = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
 
-CPP_OBJECTS = $(CPP_SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-C_OBJECTS = $(C_SOURCES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+# Object files
+CPP_OBJECTS = $(patsubst %,$(BUILD_DIR)/%,$(notdir $(CPP_SOURCES:.cpp=.o)))
+C_OBJECTS   = $(patsubst %,$(BUILD_DIR)/%,$(notdir $(C_SOURCES:.c=.o)))
 OBJECTS = $(CPP_OBJECTS) $(C_OBJECTS)
 
+# Target
 TARGET = $(BIN_DIR)/flight_simulator
 
+# Default build
 all: directories $(TARGET)
 
+# Create necessary directories
 directories:
 	@mkdir -p $(BUILD_DIR)
 	@mkdir -p $(BIN_DIR)
 
+# Link object files into executable
 $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(LIBS)
 	@echo "Build complete: $(TARGET)"
 
 # Compile C++ source files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(BUILD_DIR)/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Compile C source files (for glad.c)
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(BUILD_DIR)/%.o: src/functions/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Compile C source files
+$(BUILD_DIR)/%.o: src/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: src/functions/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Run the application
