@@ -56,5 +56,6 @@ void updatePlaneControls(GLFWwindow* window, float deltaTime);
 void generateReferenceCubes();
 void renderCube(const Cube &cube);
 void renderReferenceCubes();
+void renderGroundGrid();
 
 #endif

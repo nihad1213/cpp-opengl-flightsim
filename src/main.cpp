@@ -10,7 +10,6 @@ int main() {
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    // Remove this line: glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow* window = createWindow(800, 800, "Flight Simulator");
 
@@ -28,6 +27,8 @@ int main() {
         return -1;
     }
 
+    generateReferenceCubes();
+
     glEnable(GL_DEPTH_TEST);
 
     glMatrixMode(GL_PROJECTION);
@@ -35,17 +36,42 @@ int main() {
     glOrtho(-2, 2, -2, 2, 0.1, 100);
     glMatrixMode(GL_MODELVIEW);
 
-    while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
+    double lastTime = glfwGetTime();
 
-        // Position the camera
+    std::cout << "\n=== Flight Simulator Controls ===" << std::endl;
+    std::cout << "W/S: Increase/Decrease speed" << std::endl;
+    std::cout << "A/D: Turn left/right (yaw)" << std::endl;
+    std::cout << "Arrow Up/Down: Pitch up/down" << std::endl;
+    std::cout << "Arrow Left/Right: Roll left/right" << std::endl;
+    std::cout << "Mouse drag: Rotate view" << std::endl;
+    std::cout << "R: Reset camera and plane" << std::endl;
+    std::cout << "ESC: Exit" << std::endl;
+    std::cout << "================================\n" << std::endl;
+
+    while (!glfwWindowShouldClose(window)) {
+        double currentTime = glfwGetTime();
+        float deltaTime = static_cast<float>(currentTime - lastTime);
+        lastTime = currentTime;
+
+        updatePlaneControls(window, deltaTime);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
+
         glLoadIdentity();
         glTranslatef(0.0f, 0.0f, -5.0f);
 
         // Mouse Controls
         glRotatef(camera.rotationX, 1.0f, 0.0f, 0.0f);
         glRotatef(camera.rotationY, 0.0f, 1.0f, 0.0f);
+
+        renderGroundGrid();
+
+        renderReferenceCubes();
+
+        glRotatef(planeState.rotX, 1.0f, 0.0f, 0.0f);
+        glRotatef(planeState.rotY, 0.0f, 1.0f, 0.0f);
+        glRotatef(planeState.rotZ, 0.0f, 0.0f, 1.0f);
 
         glRotatef(-85.0f, 1.0f, 0.0f, 1.0f);
         
