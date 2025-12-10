@@ -12,9 +12,11 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     // Remove this line: glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = createWindow(800, 600, "Flight Simulator");
+    GLFWwindow* window = createWindow(800, 800, "Flight Simulator");
 
     if (!window) return -1;
+
+    glfwSetKeyCallback(window, keyCallback);
 
     Model plane = loadObj("src/assets/plane/plane.obj");
 

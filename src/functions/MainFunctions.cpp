@@ -23,6 +23,15 @@ GLFWwindow* createWindow(int width, int height, const std::string &title) {
 }
 
 /**
+ * keyCallback: Press ESC to colse window
+ */
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+}
+
+/**
  * loadObj: read .obj files
  */
 Model loadObj(const std::string &filepath) {

@@ -9,6 +9,8 @@
 #include <math.h>
 
 GLFWwindow* createWindow(int width, int height, const std::string &title);
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 
 struct Vertex {
     float x, y, z;
