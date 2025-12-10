@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <limits>
 
 /**
  * createWindow: Create window
@@ -61,8 +62,45 @@ Model loadObj(const std::string &filepath) {
     std::cout << "Loaded: " << model.vertices.size() << " vertices, " 
               << model.faces.size() << " triangles" << std::endl;
     
+    if (!model.vertices.empty()) {
+        float minX = model.vertices[0].x, maxX = model.vertices[0].x;
+        float minY = model.vertices[0].y, maxY = model.vertices[0].y;
+        float minZ = model.vertices[0].z, maxZ = model.vertices[0].z;
+        
+        for (const Vertex &v : model.vertices) {
+            if (v.x < minX) minX = v.x;
+            if (v.x > maxX) maxX = v.x;
+            if (v.y < minY) minY = v.y;
+            if (v.y > maxY) maxY = v.y;
+            if (v.z < minZ) minZ = v.z;
+            if (v.z > maxZ) maxZ = v.z;
+        }
+        
+        float centerX = (minX + maxX) / 2.0f;
+        float centerY = (minY + maxY) / 2.0f;
+        float centerZ = (minZ + maxZ) / 2.0f;
+        
+        float sizeX = maxX - minX;
+        float sizeY = maxY - minY;
+        float sizeZ = maxZ - minZ;
+        float maxSize = std::max({sizeX, sizeY, sizeZ});
+        
+        float scale = 2.0f / maxSize;
+        
+        std::cout << "Model size: " << sizeX << " x " << sizeY << " x " << sizeZ << std::endl;
+        std::cout << "Scaling by: " << scale << std::endl;
+        
+        // Center and scale all vertices
+        for (Vertex &v : model.vertices) {
+            v.x = (v.x - centerX) * scale;
+            v.y = (v.y - centerY) * scale;
+            v.z = (v.z - centerZ) * scale;
+        }
+        
+        std::cout << "Model normalized and centered" << std::endl;
+    }
+    
     return model;
-
 }
 
 /**
@@ -83,4 +121,3 @@ void renderModel(const Model &model) {
 
     glEnd();
 }
-
