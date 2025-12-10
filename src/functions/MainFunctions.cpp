@@ -1,5 +1,4 @@
 #include "MainFunctions.hpp"
-#include <iostream>
 
 /**
  * createWindow: Create window
