@@ -34,10 +34,27 @@ struct Camera {
     bool isDragging;
 };
 
+struct PlaneState {
+    float posX, posY, posZ;
+    float rotX, rotY, rotZ;
+    float speed;
+};
+
+struct Cube {
+    float x, y, z;
+    float size;
+    float r, g, b;
+};
+
 extern Camera camera;
+extern PlaneState planeState;
+extern std::vector<Cube> referenceCubes;
 
 Model loadObj(const std::string &filepath);
 void renderModel(const Model &model);
-
+void updatePlaneControls(GLFWwindow* window, float deltaTime);
+void generateReferenceCubes();
+void renderCube(const Cube &cube);
+void renderReferenceCubes();
 
 #endif
