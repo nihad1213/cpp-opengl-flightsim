@@ -5,6 +5,9 @@
 #include <cmath>
 #include <limits>
 
+// Camera initialization
+Camera camera = {20.0f, 0.0f, 0.0, 0.0, false};
+
 /**
  * createWindow: Create window
  */
@@ -28,6 +31,46 @@ GLFWwindow* createWindow(int width, int height, const std::string &title) {
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
+    }
+
+    if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+        camera.rotationX = 20.0f;
+        camera.rotationY = 0.0f;
+        std::cout << "Camera reset" << std::endl;
+    }
+}
+
+
+/**
+ * mouseButtonCallback: Detect when mouse button is pressed/released
+ */
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int /*mods*/) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+        if (action == GLFW_PRESS) {
+            camera.isDragging = true;
+            glfwGetCursorPos(window, &camera.lastMouseX, &camera.lastMouseY);
+        } else if (action == GLFW_RELEASE) {
+            camera.isDragging = false;
+        }
+    }
+}
+
+/**
+ * cursorPosCallback: Track mouse movement
+ */
+void cursorPosCallback(GLFWwindow* /*window*/, double xpos, double ypos) {
+    if (camera.isDragging) {
+        double deltaX = xpos - camera.lastMouseX;
+        double deltaY = ypos - camera.lastMouseY;
+        
+        camera.rotationY += static_cast<float>(deltaX) * 0.5f;
+        camera.rotationX += static_cast<float>(deltaY) * 0.5f;
+        
+        if (camera.rotationX > 89.0f) camera.rotationX = 89.0f;
+        if (camera.rotationX < -89.0f) camera.rotationX = -89.0f;
+        
+        camera.lastMouseX = xpos;
+        camera.lastMouseY = ypos;
     }
 }
 

@@ -17,6 +17,8 @@ int main() {
     if (!window) return -1;
 
     glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, cursorPosCallback);
 
     Model plane = loadObj("src/assets/plane/plane.obj");
 
@@ -40,6 +42,12 @@ int main() {
         // Position the camera
         glLoadIdentity();
         glTranslatef(0.0f, 0.0f, -5.0f);
+
+        // Mouse Controls
+        glRotatef(camera.rotationX, 1.0f, 0.0f, 0.0f);
+        glRotatef(camera.rotationY, 0.0f, 1.0f, 0.0f);
+
+        glRotatef(-85.0f, 1.0f, 0.0f, 1.0f);
         
         glColor3f(1.0f, 1.0f, 1.0f);
         

@@ -10,7 +10,8 @@
 
 GLFWwindow* createWindow(int width, int height, const std::string &title);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
 struct Vertex {
     float x, y, z;
@@ -24,6 +25,16 @@ struct Model {
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
 };
+
+struct Camera {
+    float rotationX;
+    float rotationY;
+    double lastMouseX;
+    double lastMouseY;
+    bool isDragging;
+};
+
+extern Camera camera;
 
 Model loadObj(const std::string &filepath);
 void renderModel(const Model &model);
