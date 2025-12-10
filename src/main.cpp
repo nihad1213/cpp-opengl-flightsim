@@ -2,8 +2,6 @@
 #include <iostream>
 #include "functions/MainFunctions.hpp"
 
-// #include "glad/glad.h"
-
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
