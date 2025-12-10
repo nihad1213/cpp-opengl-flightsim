@@ -23,7 +23,7 @@ GLFWwindow* createWindow(int width, int height, const std::string &title) {
 }
 
 /**
- * keyCallback: Press ESC to colse window
+ * keyCallback: Press ESC to close window
  */
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
